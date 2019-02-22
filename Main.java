@@ -1,12 +1,29 @@
 import java.util.ArrayList;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Vector;
+
 
 public class Main {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws FileNotFoundException {
 		long startTime = System.nanoTime();
 		// TODO Auto-generated method stub
-		String datafile = "15R1V.txt";
+		String datafile = "1T50R1V_java.txt";
+		
+		File file = new File ("1T50R1V_java_results.txt");
+		
+		if (!file.exists()) {
+			try { file.createNewFile(); 
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		PrintWriter pw = new PrintWriter(file);	
+		
 		//ArrayList<PickupNode> pickupnodes = new ArrayList<PickupNode>();
 		//ArrayList<DeliveryNode> deliverynodes = new ArrayList<DeliveryNode>();
 		Vector<Node> nodes = new Vector<Node>();
@@ -23,7 +40,7 @@ public class Main {
 		//System.out.println(nodes.get(0).location);
 		//System.out.println(nodes.get(0).locationName);
 		PathBuilder builder;
-		builder = new PathBuilder(pickupNodes, deliveryNodes, nodes, depot,inputdata);
+		builder = new PathBuilder(pickupNodes, deliveryNodes, nodes, depot,inputdata, pw);
 		builder.BuildPaths();
 		//System.out.println(Node.getCorrespondingNode(nodes.get(2),nodes).number);
 		
@@ -31,6 +48,8 @@ public class Main {
 		//code
 		long endTime = System.nanoTime();
 		System.out.println("Took "+(endTime - startTime)/1000000 + " milli seconds"); 
+		pw.println ("Took "+(endTime - startTime)/1000000 + " milli seconds");
 		
+		pw.close();
 	}
 }
